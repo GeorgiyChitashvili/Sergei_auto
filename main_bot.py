@@ -18,7 +18,7 @@ def main(message: types.Message):
     btn2 = types.KeyboardButton(text="Удалить SKU")
     keyboard.row(btn1, btn2)
 
-    bot.send_message(message.chat.id, "Выберите, какую категорию хотите заказать? ", reply_markup=keyboard)
+    bot.send_message(message.chat.id, "Выберите действие", reply_markup=keyboard)
     bot.register_next_step_handler(callback=callback_check, message=message)
 
 
