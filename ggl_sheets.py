@@ -21,27 +21,27 @@ def get_planned_values(manager_name, sku_sheet_name):
     sku_sheet = wb.worksheet(sku_sheet_name)
 
     if sku_sheet.acell("B8").value:
-        planned_revenue = sku_sheet.acell("B8").value / 30.5
+        planned_revenue = float(sku_sheet.acell("B8").value) / 30.5
     else:
         planned_revenue = 0
 
     if sku_sheet.acell("B9").value:
-        planned_profit = sku_sheet.acell("B9").value / 30.5
+        planned_profit = float(sku_sheet.acell("B9").value) / 30.5
     else:
         planned_profit = 0
 
     if sku_sheet.acell("B10").value:
-        planned_prom = sku_sheet.acell("B10").value / 30.5
+        planned_prom = float(sku_sheet.acell("B10").value) / 30.5
     else:
         planned_prom = 0
 
     if sku_sheet.acell("B10").value:
-        planned_prom = sku_sheet.acell("B10").value / 30.5
+        planned_prom = float(sku_sheet.acell("B10").value) / 30.5
     else:
         planned_prom = 0
 
     if sku_sheet.acell("B11").value:
-        cost = sku_sheet.acell("B11").value / 30.5
+        cost = float(sku_sheet.acell("B11").value) / 30.5
     else:
         cost = 0
 

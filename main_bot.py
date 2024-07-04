@@ -51,18 +51,24 @@ def callback_check(message: types.Message):
 def add_sku(message: types.Message):
     # Adding SKU's to JSON-format DB
     # Обработка переданных данных
-    manager, sku_data = process_message(message, JSON_BD, 0)
-    print(sku_data)
-    add_new_worksheets(sku_data, manager)
+    try:
+        manager, sku_data = process_message(message, JSON_BD, 0)
+        print(sku_data)
+        add_new_worksheets(sku_data, manager)
 
-    bot.send_message(message.chat.id, text='Артикулы добавлены')
+        bot.send_message(message.chat.id, text='Артикулы добавлены')
+    except BaseException as e:
+        bot.send_message(message.chat.id, text='Какая-то ошибка')
 
 
 def delete_sku(message: types.Message):
-    # Deleting SKU's from JSON-format DB
-    sku_data = process_message(message, JSON_BD, 2)
+    try:
+        # Deleting SKU's from JSON-format DB
+        sku_data = process_message(message, JSON_BD, 2)
 
-    bot.send_message(message.chat.id, text='Артикулы удалены')
+        bot.send_message(message.chat.id, text='Артикулы удалены')
+    except BaseException as e:
+        bot.send_message(message.chat.id, text='Какая-то ошибка')
 
 
 if __name__ == "__main__":

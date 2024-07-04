@@ -14,7 +14,6 @@ def get_data(sku_input, date, API_WB):
     # try:
     try:
         sku = sku_input["skuWB"]
-        print(sku)
 
         url_incomes = 'https://statistics-api.wildberries.ru/api/v1/supplier/sales'
         headers = {'Authorization': API_WB}
@@ -23,9 +22,8 @@ def get_data(sku_input, date, API_WB):
 
         df = pd.DataFrame(response_incomes)
         df.set_index('srid')
-        print(df)
         sku_df = df[df["nmId"] == int(sku)]
-        print(sku_df)
+
 
         # Выручка магазина по артикулу, р
         day_sum = sku_df["finishedPrice"].sum()
@@ -52,7 +50,7 @@ def get_data(sku_input, date, API_WB):
 
         # Заказов магазина по артикулу, р
         day_sum = sku_df["finishedPrice"].sum()
-        resulting_dict["Заказов на сумму, р"] = int(day_sum)
+        resulting_dict["Заказов на сумму, р"] = int(float(day_sum))
 
         # СПП
         spp = sku_df['spp'].max()
@@ -179,7 +177,6 @@ def get_data(sku_input, date, API_WB):
                     search_ids.append(element['advertId'])
                 elif element['type'] == 8 and element['autoParams']['nms'][0] == sku:
                     ark_ids.append(element['advertId'])
-            print(ark_ids)
     except BaseException:
         print("Error in promotion/count")
 
@@ -190,7 +187,6 @@ def get_data(sku_input, date, API_WB):
         response_incomes = requests.post(url_analytics, headers=headers, data=json.dumps(request_body))
         data = response_incomes.json()
     except BaseException:
-
         print(f"error on {url_analytics}")
 
     search_stats = {'views': 0, 'clicks': 0, 'buckets': 0, 'orders': 0, 'sum': 0, 'orders_sum': 0}
@@ -332,10 +328,11 @@ def main(date):
                         data = get_data(managers_data[manager][sku], str(date), WB_API)
                         adding_data_daily(manager, managers_data[manager][sku]["skuName"], data, str(date))
                         fill_summary_table(manager, managers_data[manager][sku], data, str(date))
+                        print(f"DONE on {manager} {sku} {date}")
                         time.sleep(120)
                         break
                     except BaseException:
-                        print(f"error on {manager} {sku} {date}")
+                        print(f"ERROR on {manager} {sku} {date}")
                         RETRY_COUNT += 1
                         time.sleep(120)
 
