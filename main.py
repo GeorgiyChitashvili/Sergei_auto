@@ -26,7 +26,7 @@ def get_data(sku_input, date, API_WB):
 
 
         # Выручка магазина по артикулу, р
-        day_sum = sku_df["finishedPrice"].sum()
+        day_sum = sku_df["priceWithDisc"].sum()
         resulting_dict["Выкупов на сумму, р"] = int(day_sum)
 
         # Продажи за день по артикулу, шт
@@ -44,12 +44,12 @@ def get_data(sku_input, date, API_WB):
         sku_df = df[df["nmId"] == sku]
 
         # Заказов за день по артикулу, шт
-        count_sum = sku_df["finishedPrice"].count()
+        count_sum = sku_df["priceWithDisc"].count()
         if count_sum:
             resulting_dict["Заказы, шт"] = int(count_sum)
 
         # Заказов магазина по артикулу, р
-        day_sum = sku_df["finishedPrice"].sum()
+        day_sum = sku_df["priceWithDisc"].sum()
         resulting_dict["Заказов на сумму, р"] = int(float(day_sum))
 
         # СПП
@@ -177,17 +177,23 @@ def get_data(sku_input, date, API_WB):
                     search_ids.append(element['advertId'])
                 elif element['type'] == 8 and element['autoParams']['nms'][0] == sku:
                     ark_ids.append(element['advertId'])
+
+            time.sleep(1)
     except BaseException:
         print("Error in promotion/count")
 
     # Сбор информации по конкретным кампаниям
+    time.sleep(60)
     url_analytics = 'https://advert-api.wb.ru/adv/v2/fullstats'
     request_body = [{"id": id, "dates": [date]} for id in search_ids + ark_ids]
+    print(request_body)
     try:
         response_incomes = requests.post(url_analytics, headers=headers, data=json.dumps(request_body))
         data = response_incomes.json()
     except BaseException:
         print(f"error on {url_analytics}")
+
+    print(data)
 
     search_stats = {'views': 0, 'clicks': 0, 'buckets': 0, 'orders': 0, 'sum': 0, 'orders_sum': 0}
     ark_stats = {'views': 0, 'clicks': 0, 'buckets': 0, 'orders': 0, 'sum': 0, 'orders_sum': 0}
@@ -329,12 +335,12 @@ def main(date):
                         adding_data_daily(manager, managers_data[manager][sku]["skuName"], data, str(date))
                         fill_summary_table(manager, managers_data[manager][sku], data, str(date))
                         print(f"DONE on {manager} {sku} {date}")
-                        time.sleep(120)
+                        time.sleep(240)
                         break
                     except BaseException:
                         print(f"ERROR on {manager} {sku} {date}")
                         RETRY_COUNT += 1
-                        time.sleep(120)
+                        time.sleep(240)
 
             # iter_date = dt.date(2024, 2, 1)
             # end_date = dt.date(2024, 3, 29)
@@ -363,13 +369,13 @@ if __name__ == "__main__":
     while True:
         date = dt.date.today()
         main(date)
-        time.sleep(240)
+        time.sleep(360)
         main(date - dt.timedelta(1))
-        time.sleep(240)
+        time.sleep(360)
         main(date)
-        time.sleep(240)
+        time.sleep(360)
         main(date - dt.timedelta(2))
-        time.sleep(240)
+        time.sleep(360)
         main(date)
 
 

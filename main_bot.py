@@ -27,7 +27,7 @@ def callback_check(message: types.Message):
         bot.send_message(message.chat.id,
                          "Выбрано: Добавить SKU. "
                          "В одном сообщении на разных строках введите данные в следующем формате:\n"
-                         "Артикул внутренний - Артикул ВБ - Опознавательное имя артикула\n"
+                         "Артикул поставщика - Артикул ВБ - Опознавательное имя артикула\n"
                          "Сохраняйте знаки-разделители '-' и пробелы между ними."
                          "В случае некорректности данных программа не "
                          "будет работать правильно. Удостоверьтесь, что артикулы верны")
@@ -37,7 +37,7 @@ def callback_check(message: types.Message):
         bot.send_message(message.chat.id,
                          "Выбрано: Удалить SKU. "
                          "В одном сообщении на разных строках введите данные в следующем формате:\n"
-                         "Артикул ВБ\n"
+                         "Артикул поставщика\n"
                          "В случае некорректности данных программа не "
                          "будет работать правильно. Удостоверьтесь, что артикулы верны")
         bot.register_next_step_handler(callback=delete_sku, message=message)
@@ -51,23 +51,23 @@ def callback_check(message: types.Message):
 def add_sku(message: types.Message):
     # Adding SKU's to JSON-format DB
     # Обработка переданных данных
-    try:
+    # try:
         manager, sku_data = process_message(message, JSON_BD, 0)
         print(sku_data)
         add_new_worksheets(sku_data, manager)
 
         bot.send_message(message.chat.id, text='Артикулы добавлены')
-    except BaseException as e:
+    # except BaseException as e:
         bot.send_message(message.chat.id, text='Какая-то ошибка')
 
 
 def delete_sku(message: types.Message):
-    try:
+    # try:
         # Deleting SKU's from JSON-format DB
         sku_data = process_message(message, JSON_BD, 2)
 
         bot.send_message(message.chat.id, text='Артикулы удалены')
-    except BaseException as e:
+    # except BaseException as e:
         bot.send_message(message.chat.id, text='Какая-то ошибка')
 
 

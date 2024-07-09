@@ -72,6 +72,7 @@ def adding_data_daily(manager_name, sku_sheet_name, data, day):
                 count = 0
             if key in data:
                 sku_sheet.update_cell(row=data_form[key], col=date_col, value=str(data[key]))
+        sku_sheet.update_acell("C1", str(datetime.datetime.now()))
 
     # Прибыль
     # sku_sheet.update_cell(row=7, col=date_col, value="NO INF")
@@ -91,12 +92,11 @@ def new_summary_table(wb: gspread.Spreadsheet, skus):
     act_sheet = wb.worksheet('Общая')
 
     #WB table
-    for i in range(int(act_sheet.acell('CI72').value) + 1, 3 + len(skus)):
-        act_sheet.update_cell(row=i, col=1, value=skus[i - 3][1])
-        act_sheet.update_cell(row=i, col=2, value=skus[i - 3][2] + "Article")
-        act_sheet.update_cell(row=i, col=3, value=skus[i - 3][0])
+    for i in range(0, len(skus)):
         val = int(act_sheet.acell('CI72').value) + 1
-        act_sheet.acell('CI72').value = val
+        act_sheet.update_cell(row=val, col=1, value=skus[i][1])
+        act_sheet.update_cell(row=val, col=3, value=skus[i][0])
+        act_sheet.update_acell('CI72', val)
     time.sleep(30)
 
 
