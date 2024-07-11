@@ -183,7 +183,7 @@ def get_data(sku_input, date, API_WB):
         print("Error in promotion/count")
 
     # Сбор информации по конкретным кампаниям
-    time.sleep(60)
+    time.sleep(10)
     url_analytics = 'https://advert-api.wb.ru/adv/v2/fullstats'
     request_body = [{"id": id, "dates": [date]} for id in search_ids + ark_ids]
     print(request_body)
@@ -335,12 +335,12 @@ def main(date):
                         adding_data_daily(manager, managers_data[manager][sku]["skuName"], data, str(date))
                         fill_summary_table(manager, managers_data[manager][sku], data, str(date))
                         print(f"DONE on {manager} {sku} {date}")
-                        time.sleep(240)
+                        time.sleep(150)
                         break
                     except BaseException:
                         print(f"ERROR on {manager} {sku} {date}")
                         RETRY_COUNT += 1
-                        time.sleep(240)
+                        time.sleep(150)
 
             # iter_date = dt.date(2024, 2, 1)
             # end_date = dt.date(2024, 3, 29)
@@ -369,14 +369,17 @@ if __name__ == "__main__":
     while True:
         date = dt.date.today()
         main(date)
-        time.sleep(360)
+        time.sleep(180)
         main(date - dt.timedelta(1))
-        time.sleep(360)
+        time.sleep(180)
         main(date)
-        time.sleep(360)
+        time.sleep(180)
         main(date - dt.timedelta(2))
-        time.sleep(360)
+        time.sleep(180)
         main(date)
+        time.sleep(180)
+        main(date)
+        time.sleep(180)
 
 
     # dates = [dt.date.today() - dt.timedelta(i) for i in range(5, -1, -1)]
