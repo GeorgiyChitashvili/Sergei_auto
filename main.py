@@ -158,6 +158,7 @@ def get_data(sku_input, date, API_WB):
             if advert["status"] in (9, 11) and advert["type"] in (8, 9):
                 for element in advert["advert_list"]:
                     ids.append(element["advertId"])
+                    time.sleep(1)
 
         # Сбор информации о кампаниях по Артикулу
 
@@ -226,12 +227,12 @@ def get_data(sku_input, date, API_WB):
                 print(f'Error {e}')
 
 
-    resulting_dict['Показы (реклама)'] = int(overall_stats['views'] + overall_stats['views'])
-    resulting_dict['Перешли в карточку (реклама)'] = int(overall_stats['clicks'] + overall_stats['clicks'])
-    resulting_dict['Добавили в корзину (реклама)'] = int(overall_stats['buckets'] + overall_stats['buckets'])
+    resulting_dict['Показы (реклама)'] = int(overall_stats['views'])
+    resulting_dict['Перешли в карточку (реклама)'] = int(overall_stats['clicks'])
+    resulting_dict['Добавили в корзину (реклама)'] = int(overall_stats['buckets'])
     resulting_dict['Конверсия в корзину (реклама)'] = str(
         correct_division(overall_stats['buckets'], overall_stats['clicks']) * 100) + "%"
-    resulting_dict['Заказано (реклама)'] = int(overall_stats['orders'] + overall_stats['orders'])
+    resulting_dict['Заказано (реклама)'] = int(overall_stats['orders'])
     resulting_dict['Конверсия в заказ (реклама)'] = str(
         correct_division(overall_stats['orders'], overall_stats['buckets']) * 100) + "%"
     resulting_dict['CR (реклама)'] = str(correct_division(overall_stats['buckets'], overall_stats['clicks']) * 100
@@ -338,7 +339,7 @@ def main(date):
                         time.sleep(150)
                         break
                     except BaseException:
-                        print(f"ERROR on {manager} {sku} {date}")
+                        print(f"ERROR on {manager} {sku} {date} trying {RETRY_COUNT} time")
                         RETRY_COUNT += 1
                         time.sleep(150)
 

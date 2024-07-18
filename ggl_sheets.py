@@ -67,7 +67,7 @@ def adding_data_daily(manager_name, sku_sheet_name, data, day):
         count = 0
         for key in data_form.keys():
             count += 1
-            if count > 55:
+            if count > 40:
                 time.sleep(60)
                 count = 0
             if key in data:
