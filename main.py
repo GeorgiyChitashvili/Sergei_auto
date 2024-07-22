@@ -216,15 +216,15 @@ def get_data(sku_input, date, API_WB):
                 search_stats['sum'] += advert["sum"]
                 search_stats['orders_sum'] += advert['sum_price']
 
-            try:
-                overall_stats['views'] += advert["views"]
-                overall_stats['clicks'] += advert["clicks"]
-                overall_stats['buckets'] += advert["atbs"]
-                overall_stats['orders'] += advert["orders"]
-                overall_stats['sum'] += advert["sum"]
-                overall_stats['orders_sum'] += advert['sum_price']
-            except BaseException as e :
-                print(f'Error {e}')
+        try:
+            overall_stats['views'] = ark_stats['views'] + search_stats['views']
+            overall_stats['clicks'] = ark_stats['views'] + search_stats['views']
+            overall_stats['buckets'] = ark_stats['views'] + search_stats['views']
+            overall_stats['orders'] = ark_stats['views'] + search_stats['views']
+            overall_stats['sum'] = ark_stats['views'] + search_stats['views']
+            overall_stats['orders_sum'] = ark_stats['views'] + search_stats['views']
+        except BaseException as e:
+            print(f'Error {e}')
 
 
     resulting_dict['Показы (реклама)'] = int(overall_stats['views'])
