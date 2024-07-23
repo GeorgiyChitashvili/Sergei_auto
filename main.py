@@ -72,20 +72,22 @@ def get_data(sku_input, date, API_WB):
     try:
         for country in countries:
             if "nmId" in sku_df.columns:
-                info = sku_df[sku_df["countryName"] == country.lower()]["finishedPrice"].count()
-                okrugi_data.append((country, int(info)))
+                info = sku_df[sku_df["countryName"] == country]
+                okrugi_data.append((country, len(info)))
             else:
-                okrugi_data.append((country, 0))
+                print(okrugi_data)
         for okrug in okrugi:
             if "nmId" in sku_df.columns:
-                info = sku_df[sku_df["oblastOkrugName"] == okrug.lower()]["finishedPrice"].count()
-                okrugi_data.append((okrug, int(info)))
+                info = sku_df[sku_df["oblastOkrugName"] == okrug]
+                okrugi_data.append((okrug, len(info)))
+                print(info)
+                print(okrugi_data)
             else:
                 okrugi_data.append((okrug, 0))
         for okrug in okrugi_data:
             resulting_dict[okrug[0]] = okrug[1]
     except BaseException as e:
-        print(f"FAILED WB SKLADI WITH {e}")
+        print(f"FAILED WB OKRUGI WITH {e}")
 
     # Склады
     if date == str(dt.date.today()):
